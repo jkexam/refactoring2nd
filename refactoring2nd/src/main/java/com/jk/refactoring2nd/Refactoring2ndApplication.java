@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class Refactoring2ndApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(Refactoring2ndApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(Refactoring2ndApplication.class, args);
+    }
 
 }
