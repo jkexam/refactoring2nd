@@ -60,22 +60,22 @@ public class Statement {
         return result;
     }
 
-    private static int anoijntFor(Performance perf, Play play) { //값이 바뀌지 않는 변수는 매개변수로 전달
+    private static int anoijntFor(Performance aPerfomance, Play play) { //값이 바뀌지 않는 변수는 매개변수로 전달
         int result = 0; // 변수를 초기화하는 코드
 
         switch (play.getType()) {
             case "tragedy": // 비극
                 result = 40000;
-                if (perf.getAudience() > 30) {
-                    result += (int) (1000 * (perf.getAudience() - 30));
+                if (aPerfomance.getAudience() > 30) {
+                    result += (int) (1000 * (aPerfomance.getAudience() - 30));
                 }
                 break;
             case "comedy": // 희극
                 result = 30000;
-                if (perf.getAudience() > 20) {
-                    result = (int) (result + (10000 + 500 * (perf.getAudience() - 20)));
+                if (aPerfomance.getAudience() > 20) {
+                    result = (int) (result + (10000 + 500 * (aPerfomance.getAudience() - 20)));
                 }
-                result = (int) (result + 300 * perf.getAudience());
+                result = (int) (result + 300 * aPerfomance.getAudience());
                 break;
             default:
                 throw new IllegalArgumentException(String.format("알 수 없는 장르: %s", play.getType()));
