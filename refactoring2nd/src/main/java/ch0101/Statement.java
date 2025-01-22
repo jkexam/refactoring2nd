@@ -40,18 +40,19 @@ public class Statement {
         NumberFormat format = NumberFormat.getCurrencyInstance(Locale.US);
 
         for (Performance perf : invoice.getPerformances()) {
-            Play play = plays.get(perf.getPlayId());
-            int thisAmount = anoijntFor(perf, play);
+//            Play play = playFor(plays, perf); // 인라인된 변수 제거
+            int thisAmount = amountFor(perf, playFor(perf, plays));
 
             // 포인트를 적립한다.
             volumeCredits += (int) Math.max(perf.getAudience() - 30, 0);
             // 희극 관객 5명마다 추가 포인트를 제공한다.
-            if ("comedy".equals(play.getType())) {
+            if ("comedy".equals(playFor(perf, plays).getType())) { // 변수 인라인
                 volumeCredits += (int) Math.floor(perf.getAudience() / 5);
             }
 
             // 청구 내역을 출력한다.
-            result += String.format("  %s: %s (%d석)\n", play.getName(), format.format(thisAmount / 100.0), (int) perf.getAudience());
+            result += String.format("  %s: %s (%d석)\n", playFor(perf, plays).getName() // 변수 인라인
+                    , format.format(thisAmount / 100.0), (int) perf.getAudience());
             totalAmount += thisAmount;
         }
 
@@ -60,7 +61,11 @@ public class Statement {
         return result;
     }
 
-    private static int anoijntFor(Performance aPerfomance, Play play) { //값이 바뀌지 않는 변수는 매개변수로 전달
+    private static Play playFor(Performance perf, Map<String, Play> plays) {
+        return plays.get(perf.getPlayId());
+    }
+
+    private static int amountFor(Performance aPerfomance, Play play) { //값이 바뀌지 않는 변수는 매개변수로 전달
         int result = 0; // 변수를 초기화하는 코드
 
         switch (play.getType()) {
