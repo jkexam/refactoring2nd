@@ -41,25 +41,7 @@ public class Statement {
 
         for (Performance perf : invoice.getPerformances()) {
             Play play = plays.get(perf.getPlayId());
-            int thisAmount = 0;
-
-            switch (play.getType()) {
-                case "tragedy": // 비극
-                    thisAmount = 40000;
-                    if (perf.getAudience() > 30) {
-                        thisAmount += (int) (1000 * (perf.getAudience() - 30));
-                    }
-                    break;
-                case "comedy": // 희극
-                    thisAmount = 30000;
-                    if (perf.getAudience() > 20) {
-                        thisAmount = (int) (thisAmount + (10000 + 500 * (perf.getAudience() - 20)));
-                    }
-                    thisAmount = (int) (thisAmount + 300 * perf.getAudience());
-                    break;
-                default:
-                    throw new IllegalArgumentException(String.format("알 수 없는 장르: %s", play.getType()));
-            }
+            int thisAmount = anoijntFor(perf, play);
 
             // 포인트를 적립한다.
             volumeCredits += (int) Math.max(perf.getAudience() - 30, 0);
@@ -76,6 +58,29 @@ public class Statement {
         result += String.format("총액: %s\n", format.format(totalAmount / 100.0));
         result += String.format("적립 포인트: %d점\n", volumeCredits);
         return result;
+    }
+
+    private static int anoijntFor(Performance perf, Play play) { //값이 바뀌지 않는 변수는 매개변수로 전달
+        int thisAmount = 0; // 변수를 초기화하는 코드
+
+        switch (play.getType()) {
+            case "tragedy": // 비극
+                thisAmount = 40000;
+                if (perf.getAudience() > 30) {
+                    thisAmount += (int) (1000 * (perf.getAudience() - 30));
+                }
+                break;
+            case "comedy": // 희극
+                thisAmount = 30000;
+                if (perf.getAudience() > 20) {
+                    thisAmount = (int) (thisAmount + (10000 + 500 * (perf.getAudience() - 20)));
+                }
+                thisAmount = (int) (thisAmount + 300 * perf.getAudience());
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("알 수 없는 장르: %s", play.getType()));
+        }
+        return thisAmount; // 함수 안에서 값이 바뀌는 변수 반환
     }
 
     @Data
@@ -103,9 +108,6 @@ public class Statement {
             return performance;
         }
 
-        public void setPerformances(List<Performance> performance) {
-            this.performance = performance;
-        }
     }
 
     @Data
